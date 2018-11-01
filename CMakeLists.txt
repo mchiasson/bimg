@@ -13,7 +13,6 @@ HunterGate(
 
 project(bimg VERSION 1.0.0)
 
-
 file(GLOB BIMG_SOURCES src/*.*)
 file(GLOB LIBSQUISH_SOURCES 3rdparty/libsquish/*.*)
 file(GLOB IQA_SOURCES 3rdparty/iqa/source/*.*)
