@@ -13,11 +13,23 @@ HunterGate(
 
 project(bimg VERSION 1.0.0)
 
-file(GLOB BIMG_SOURCES src/*.*)
-file(GLOB LIBSQUISH_SOURCES 3rdparty/libsquish/*.*)
-file(GLOB IQA_SOURCES 3rdparty/iqa/source/*.*)
+file(GLOB BIMG_SOURCES src/*)
+file(GLOB ASTC_SOURCES 3rdparty/astc/*)
+file(GLOB EDTAA3_SOURCES 3rdparty/edtaa3/*)
+file(GLOB LIBSQUISH_SOURCES 3rdparty/libsquish/*)
+file(GLOB IQA_SOURCES 3rdparty/iqa/source/*)
+file(GLOB_RECURSE NVTT_SOURCES 3rdparty/nvtt/*)
+file(GLOB PVRTC_SOURCES 3rdparty/pvrtc/*)
 
-add_library(bimg ${BIMG_SOURCES} ${LIBSQUISH_SOURCES} ${IQA_SOURCES})
+add_library(bimg
+    ${BIMG_SOURCES}
+    ${ASTC_SOURCES}
+    ${EDTAA3_SOURCES}
+    ${LIBSQUISH_SOURCES}
+    ${IQA_SOURCES}
+    ${NVTT_SOURCES}
+    ${PVRTC_SOURCES}
+)
 
 target_include_directories(bimg
     PUBLIC
@@ -25,6 +37,7 @@ target_include_directories(bimg
         $<INSTALL_INTERFACE:include>
     PRIVATE
         3rdparty
+        3rdparty/nvtt
         3rdparty/iqa/include
 )
 
