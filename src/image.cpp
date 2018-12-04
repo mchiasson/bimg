@@ -928,7 +928,7 @@ namespace bimg
 				xyz[1] += rgba1[5];
 				xyz[2] += rgba1[6];
 
-				bx::vec3Norm( (float*)dst, xyz);
+				bx::store(dst, bx::normalize(bx::load(xyz) ) );
 			}
 		}
 	}
@@ -1468,11 +1468,10 @@ namespace bimg
 
 	// BC6H, BC7
 	//
-	// Reference:
+	// Reference(s):
+	// - https://web.archive.org/web/20181126035446/https://www.khronos.org/registry/OpenGL/extensions/ARB/ARB_texture_compression_bptc.txt
+	// - https://web.archive.org/web/20181126035538/https://docs.microsoft.com/en-us/windows/desktop/direct3d11/bc6h-format
 	//
-	// https://www.khronos.org/registry/OpenGL/extensions/ARB/ARB_texture_compression_bptc.txt
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/hh308952(v=vs.85).aspx
-
 	static const uint16_t s_bptcP2[] =
 	{ //  3210     0000000000   1111111111   2222222222   3333333333
 		0xcccc, // 0, 0, 1, 1,  0, 0, 1, 1,  0, 0, 1, 1,  0, 0, 1, 1
@@ -2429,9 +2428,9 @@ namespace bimg
 
 				switch (rotationMode)
 				{
-				case 1: bx::xchg(aa, rr); break;
-				case 2: bx::xchg(aa, gg); break;
-				case 3: bx::xchg(aa, bb); break;
+				case 1: bx::swap(aa, rr); break;
+				case 2: bx::swap(aa, gg); break;
+				case 3: bx::swap(aa, bb); break;
 				default:                  break;
 				};
 
@@ -5207,7 +5206,7 @@ namespace bimg
 		total += bx::write(_writer, "FORMAT=32-bit_rle_rgbe\n" , _err);
 		total += bx::write(_writer, '\n' , _err);
 
-		total += bx::writePrintf(_writer, "%cY %d +X %d\n", _yflip ? '+' : '-', _height, _width);
+		total += bx::write(_writer, _err, "%cY %d +X %d\n", _yflip ? '+' : '-', _height, _width);
 
 		UnpackFn unpack = getUnpack(_format);
 		const uint32_t bpp  = getBitsPerPixel(_format);
