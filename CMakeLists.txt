@@ -45,6 +45,10 @@ hunter_add_package(bx)
 find_package(bx CONFIG REQUIRED)
 target_link_libraries(bimg PUBLIC bx::bx)
 
+hunter_add_package(stb)
+find_package(stb CONFIG REQUIRED)
+target_link_libraries(bimg PUBLIC stb::stb)
+
 set(targets_export_name "bimgTargets")
 set(ConfigPackageLocation lib/cmake/bimg)
 
