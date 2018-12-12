@@ -1,4 +1,4 @@
 hunter_config(bx
-    URL https://github.com/mchiasson/bx/archive/v1.0.0-p6.tar.gz
-    SHA1 37c85f06dcc185b9bdc6d1b8f201423c7b1022bb
+    URL https://github.com/mchiasson/bx/archive/v1.0.0-p7.tar.gz
+    SHA1 e8735ca5ca598cbce9afec747b205c47ca627836
 )
