@@ -16,14 +16,14 @@ project(bimg VERSION 1.0.0)
 option(BIMG_BUILD_TOOLS "Build bimg tools." ON)
 
 ################################################################################
-# bimg 3rdparty libs
+# 3rdparty libs
 ################################################################################
 
 hunter_add_package(bx)
 find_package(bx CONFIG REQUIRED)
 
 ################################################################################
-# bimg lib
+# bimg_decode lib
 ################################################################################
 
 add_library(bimg_decode src/image_decode.cpp)
@@ -34,9 +34,11 @@ target_include_directories(bimg_decode
         $<INSTALL_INTERFACE:include>
     PRIVATE
         3rdparty
-        3rdparty/nvtt
-        3rdparty/iqa/include
 )
+
+################################################################################
+# bimg_encode lib
+################################################################################
 
 add_library(bimg_encode
     3rdparty/astc/astc_averages_and_directions.cpp
@@ -117,9 +119,38 @@ target_include_directories(bimg_encode
         3rdparty/iqa/include
 )
 
-add_library(bimg src/image.cpp src/image_gnf.cpp)
-target_include_directories(bimg PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include>)
+################################################################################
+# bimg lib
+################################################################################
+
+add_library(bimg
+    3rdparty/astc-codec/src/decoder/astc_file.cc
+    3rdparty/astc-codec/src/decoder/codec.cc
+    3rdparty/astc-codec/src/decoder/endpoint_codec.cc
+    3rdparty/astc-codec/src/decoder/footprint.cc
+    3rdparty/astc-codec/src/decoder/integer_sequence_codec.cc
+    3rdparty/astc-codec/src/decoder/intermediate_astc_block.cc
+    3rdparty/astc-codec/src/decoder/logical_astc_block.cc
+    3rdparty/astc-codec/src/decoder/partition.cc
+    3rdparty/astc-codec/src/decoder/physical_astc_block.cc
+    3rdparty/astc-codec/src/decoder/quantization.cc
+    3rdparty/astc-codec/src/decoder/weight_infill.cc
+    src/image.cpp
+    src/image_gnf.cpp
+)
+target_include_directories(bimg
+    PUBLIC
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+    PRIVATE
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/3rdparty/astc-codec>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/3rdparty/astc-codec/include>
+)
 target_link_libraries(bimg PUBLIC bkaradzic::bx)
+
+################################################################################
+# texturec tool
+################################################################################
 
 if (BIMG_BUILD_TOOLS)
     add_executable(texturec tools/texturec/texturec.cpp)
